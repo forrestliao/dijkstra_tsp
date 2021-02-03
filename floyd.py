@@ -2,7 +2,6 @@ import numpy as np
 import sys
 
 
-
 def get_new_graph(graph_canva_size = (10,10)):
     INF = np.inf
     graph_matrix = np.zeros(graph_canva_size)
@@ -30,9 +29,9 @@ def get_new_graph(graph_canva_size = (10,10)):
 
 
 def set_path_weight(graph):
-    n =  int(input("Please input number of paths:"))
+    n =  int(input("Please input number of paths: "))
     
-    print("Please input \"start node\", \"end_node\", \"path weight\"")
+    print("Please input \"start node\", \"end_node\", \"path weight\": ")
     for path in range(n):
         start_node, end_node, weight = map(int, input().split(" "))
         graph[start_node][end_node] = weight
@@ -40,16 +39,13 @@ def set_path_weight(graph):
     return graph        
 
 def launch_floyd(graph):
-#Floyd algorithm
-# for k in range(1, n+1):
-# 	for i in range(1, n+1):
-# 		for j in range(1, n+1):
-# 			if e[i][j] > e[i][k]+e[k][j]:
-# 				e[i][j] = e[i][k]+e[k][j]
+    for start_node in range(len(graph)):
+        for target_node in range(len(graph)):
+            for new_node in range(len(graph)):
+                if graph[start_node][target_node]>graph[start_node][new_node] + graph[new_node][target_node]:
+                    graph[start_node][target_node] = graph[start_node][new_node] + graph[new_node][target_node]
+    return graph
 
-
-# for i in range(1,n+1):
-#     print(e[i][1:n+1])
 
 #sample data
 """
@@ -77,13 +73,11 @@ V <        >  |
 
 """
 
-
-
-
-
-
 if __name__ == "__main__":
     graph = get_new_graph()
     print(graph)
     graph = set_path_weight(graph)
     print(graph)
+    graph = launch_floyd(graph)
+    print(graph)
+    
