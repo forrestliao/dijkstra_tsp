@@ -1,35 +1,89 @@
-import pandas as pd
+import numpy as np
 import sys
-from pprint import pprint
 
-INF = sys.maxsize
-e = np.zeros((10,10), dtype = np.int)
 
-pprint(e)
 
-n, m = map(int, input().split(' '))
+def get_new_graph(graph_canva_size = (10,10)):
+    INF = np.inf
+    graph_matrix = np.zeros(graph_canva_size)
 
-# initialnize
-for i in range(1, n+1):
-    for j in range(1, n+1):
-        if i==j:
-            e[i][j] = 0
-        else:
-            e[i][j] = INF 
+    # input matrix size and number of paths
+    n = None
+    while n== None or n>10:
+        n =  int(input("Please input graph size (<= 10):"))
+        if n >=10:
+            print("You should input a number is less than or equal to 10")
+        
 
-#read lines
-for line in range(1, m+1):
-    t1, t2, t3 = map(int,input().split(" "))
-    e[t1][t2] = t3
+    # initialnize
+    graph_matrix = np.delete(graph_matrix, np.s_[n::], axis =1)
+    graph_matrix = np.delete(graph_matrix, np.s_[n::], axis =0)
 
+    for node in range(n):
+        for target in range(n):
+            if node == target:
+                graph_matrix[node][target] = 0
+            else:
+                graph_matrix[node][target] = INF
+    
+    return graph_matrix
+
+
+def set_path_weight(graph):
+    n =  int(input("Please input number of paths:"))
+    
+    print("Please input \"start node\", \"end_node\", \"path weight\"")
+    for path in range(n):
+        start_node, end_node, weight = map(int, input().split(" "))
+        graph[start_node][end_node] = weight
+    
+    return graph        
+
+def launch_floyd(graph):
 #Floyd algorithm
-for k in range(1, n+1):
-	for i in range(1, n+1):
-		for j in range(1, n+1):
-			if e[i][j] > e[i][k]+e[k][j]:
-				e[i][j] = e[i][k]+e[k][j]
+# for k in range(1, n+1):
+# 	for i in range(1, n+1):
+# 		for j in range(1, n+1):
+# 			if e[i][j] > e[i][k]+e[k][j]:
+# 				e[i][j] = e[i][k]+e[k][j]
 
 
-for i in range(1,n+1):
-    print(e[i][1:n+1])
+# for i in range(1,n+1):
+#     print(e[i][1:n+1])
 
+#sample data
+"""
+8
+0 1 4
+0 3 8
+1 2 3
+2 3 4
+2 4 2
+3 2 4
+3 4 8
+4 1 7
+
+
+零 --- 4 ---> 一
+|            /^
+|           3 |
+|          /  |
+8      二 <   7
+|     ^ \     | 
+|    4   2    |
+|   /     \   |
+V <        >  |
+三 --- 8 ---> 四
+
+"""
+
+
+
+
+
+
+if __name__ == "__main__":
+    graph = get_new_graph()
+    print(graph)
+    graph = set_path_weight(graph)
+    print(graph)
